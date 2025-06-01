@@ -1,0 +1,214 @@
+/* GENERAL BODY STYLE */
+body {
+    font-family: 'Segoe UI', Roboto, sans-serif;
+    background: linear-gradient(to bottom, #0f3d2e, #1b5e20);
+    margin: 0;
+    padding: 0;
+    color: #ffffff;
+  }
+  
+  /* LOGIN STYLES */
+  .login-container {
+    max-width: 400px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  
+  .geometric-shapes {
+    position: relative;
+    height: 200px;
+    margin-bottom: 2rem;
+    overflow: hidden;
+  }
+  
+  .shape {
+    position: absolute;
+    border: 2px solid #4caf50;
+    background: transparent;
+  }
+  
+  .shape-1 {
+    width: 120px;
+    height: 120px;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%) rotate(-15deg);
+    border-radius: 40% 60% 40% 60%;
+  }
+  
+  .shape-2 {
+    width: 100px;
+    height: 100px;
+    top: 60px;
+    left: 60%;
+    transform: translateX(-50%) rotate(25deg);
+    border-radius: 60% 40% 60% 40%;
+  }
+  
+  .sparkle {
+    position: absolute;
+    top: 30px;
+    left: 20%;
+    font-size: 1.5rem;
+    color: #c8e6c9;
+    transform: rotate(15deg);
+  }
+  
+  .login-title {
+    font-size: 2rem;
+    font-weight: 700;
+    text-align: center;
+    margin-bottom: 2.5rem;
+    color: #e8f5e9;
+  }
+  
+  .form-control {
+    border: none;
+    border-radius: 12px;
+    padding: 1rem 1.25rem;
+    font-size: 1rem;
+    background-color: #f1f8f5;
+    border: 1px solid #a5d6a7;
+    margin-bottom: 1rem;
+    color: #2e7d32;
+  }
+  
+  .password-container {
+    position: relative;
+  }
+  
+  .password-toggle {
+    position: absolute;
+    right: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    color: #81c784;
+    cursor: pointer;
+  }
+  
+  .login-btn {
+    background: linear-gradient(135deg, #388e3c, #1b5e20);
+    border: none;
+    border-radius: 12px;
+    padding: 1rem;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: white;
+    width: 100%;
+  }
+  
+  /* DASHBOARD STYLES */
+  #dashboard {
+    display: none;
+    padding: 0;
+  }
+  
+  nav {
+    background: #1b5e20;
+    padding: 10px;
+    display: flex;
+    justify-content: space-around;
+    color: white;
+  }
+  
+  nav a {
+    color: #e8f5e9;
+    text-decoration: none;
+    font-weight: bold;
+  }
+  
+  .section {
+    display: none;
+    padding: 20px;
+  }
+  
+  .active {
+    display: block;
+  }
+  
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+    background-color: #2e7d32;
+    color: white;
+  }
+  
+  th, td {
+    border: 1px solid #a5d6a7;
+    padding: 8px;
+    text-align: center;
+  }
+  
+  th {
+    background: #388e3c;
+    color: white;
+  }
+  
+  input, button {
+    padding: 6px;
+    margin: 4px;
+  }
+  
+  #map {
+    height: 300px;
+    margin-top: 10px;
+  }
+  
+  #drawerBtn {
+    display: none;
+    position: fixed;
+    top: 1rem;
+    right: 1rem;
+    z-index: 1050;
+  }
+  
+  .offcanvas .form-control {
+    margin-bottom: 1rem;
+  }
+  
+  /* Notification Badge */
+  #notificationBadge {
+    font-size: 0.8rem;
+    padding: 0.4em 0.6em;
+  }
+  
+  /* RESPONSIVE */
+  @media (max-width: 480px) {
+    .login-container {
+      padding: 1rem;
+    }
+  
+    .geometric-shapes {
+      height: 150px;
+    }
+  
+    .shape-1 {
+      width: 100px;
+      height: 100px;
+    }
+  
+    .shape-2 {
+      width: 80px;
+      height: 80px;
+    }
+  }
+  
+  /* CENTERING BUTTON */
+  .center-button {
+    display: flex;
+    justify-content: center;
+  }
+  
+  /* Override for black text on receipt */
+  #latestReceipt,
+  h4:has(+ #latestReceipt) {
+    color: black;
+  }
+  

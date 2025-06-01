@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>AquaSpark Login & POS System</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <!-- LOGIN SECTION -->
+  <div class="login-container" id="loginSection">
+    <div class="geometric-shapes">
+      <div class="sparkle">✦</div>
+      <div class="shape shape-1"></div>
+      <div class="shape shape-2"></div>
+    </div>
+    <h1 class="login-title"> AquaSpark</h1>
+    <form id="loginForm">
+      <input type="email" id="email" class="form-control" placeholder="Email address" required />
+      <div class="password-container">
+        <input type="password" id="password" class="form-control" placeholder="Password" required />
+        <button type="button" class="password-toggle" id="togglePassword">
+          <i class="fas fa-eye" id="eyeIcon"></i>
+        </button>
+      </div>
+      <button type="submit" class="login-btn">Login</button>
+    </form>
+  </div>
+
+  <!-- DASHBOARD SECTION -->
+  <div id="dashboard" class="position-relative">
+    <!-- SETTINGS DRAWER BUTTON -->
+    <div class="position-absolute top-0 end-0 p-3">
+      <button class="btn btn-outline-secondary" onclick="openDrawer()" title="Settings">
+        <i class="fas fa-cog"></i>
+      </button>
+    </div>
+
+    <nav>
+      <a href="#" onclick="showSection('stock')">Stock</a>
+      <a href="#" onclick="showSection('delivery')">Delivery</a>
+      <a href="#" onclick="showSection('tracking')">Tracking</a>
+      <a href="#" onclick="showSection('Sales')">Sales</a>
+    </nav>
+
+    <div id="stock" class="section active">
+      <h2>📦 Inventory Stock</h2>
+      <input type="text" id="itemName" placeholder="Item Name" />
+      <input type="number" id="itemQty" placeholder="Quantity" />
+      <input type="number" id="itemPrice" placeholder="Price (₱)" />
+      <button onclick="addItem()">Add Item</button>
+      <table>
+        <thead><tr><th>Item</th><th>Qty</th><th>Price</th><th>Actions</th></tr></thead>
+        <tbody id="stockTable"></tbody>
+      </table>
+    </div>
+
+    <div id="delivery" class="section">
+      <h2>🚚 Delivery Management</h2>
+      <input type="text" id="deliveryItem" placeholder="Item" />
+      <input type="text" id="deliveryAddress" placeholder="Address" />
+      <input type="text" id="deliveryStatus" placeholder="Status (e.g. pending)" />
+      <button onclick="addDelivery()">Add Delivery</button>
+      <table>
+        <thead><tr><th>Item</th><th>Address</th><th>Status</th></tr></thead>
+        <tbody id="deliveryTable"></tbody>
+      </table>
+    </div>
+
+    <div id="tracking" class="section">
+      <h2>📍 Live Truck Tracking</h2>
+      <input type="text" id="truckLocationInput" placeholder="Enter Address or Coordinates" />
+      <button onclick="locateOnMap()">Show on Map</button>
+      <div id="map"></div>
+    </div>
+
+    <div id="Sales" class="section">
+      <h2>💰 Record Sales</h2>
+      <select id="salesItem" class="form-control mb-2">
+        <option selected disabled>Select Item</option>
+        <option value="Water Gallon">Water Gallon</option>
+        <option value="5L Bottle">5L Bottle</option>
+        <option value="Delivery Charge">Delivery Charge</option>
+      </select>
+      <input type="number" id="salesQty" placeholder="Enter Quantity" class="form-control mb-2" min="1" />
+      <button class="btn btn-success mb-3" onclick="recordSale()">Record Sale</button>
+
+      <h4 style="color: white;">🧾 Latest Receipt</h4>
+<pre id="latestReceipt" class="p-2 bg-light rounded" style="color: black;">No sales yet.</pre>
+
+      <h4 class="mt-4">📊 Sales History</h4>
+
+      <!-- 👇 Integrated View Daily Sales Button Here -->
+      
+      <button class="btn btn-danger mb-2" onclick="clearSales()">Clear Sales History</button>
+      <div class="table-responsive">
+        <table class="table table-bordered">
+          <thead>
+            <tr><th>Item</th><th>Qty</th><th>Total</th><th>Date</th></tr>
+          </thead>
+          <tbody id="salesTableBody"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <div id="dailySales" class="section">
+      <h2>📅 Daily Sales</h2>
+      <div id="dailySalesData"></div>
+    </div>
+
+    <div id="weeklySales" class="section">
+      <h2>📈 Weekly Sales</h2>
+      <div id="weeklySalesData"></div>
+    </div>
+
+    <div id="monthlySales" class="section">
+      <h2>📋 Monthly Sales</h2>
+      <div id="monthlySalesData"></div>
+    </div>
+  </div>
+
+  <!-- SETTINGS DRAWER -->
+  <div class="offcanvas offcanvas-end" tabindex="-1" id="settingsDrawer">
+    <div class="offcanvas-header">
+      <h5 class="offcanvas-title">Account Settings</h5>
+      <button type="button" class="btn-close" data-bs-dismiss="offcanvas"></button>
+    </div>
+    <div class="offcanvas-body">
+      <div class="d-flex align-items-center justify-content-between mb-3">
+        <div><i class="fas fa-bell"></i> Notifications</div>
+        <span class="badge bg-danger rounded-pill" id="notificationBadge">0</span>
+      </div>
+      <div class="mb-3">
+        <div class="fw-bold"><i class="fas fa-chart-line me-2"></i> Sales</div>
+        <button onclick="showSection('dailySales')" class="btn btn-outline-primary">
+          View Daily Sales
+        </button>
+        <button class="btn btn-outline-primary w-100 mt-2" onclick="showSales('weekly')">📈 Weekly Sales</button>
+        <button class="btn btn-outline-success w-100 mt-2" onclick="showSales('monthly')">📋 Monthly Sales</button>
+      </div>
+      <hr />
+      <button class="btn btn-danger w-100" id="logoutBtn">
+        <i class="fas fa-sign-out-alt me-2"></i> Logout
+      </button>
+    </div>
+  </div>
+
+  <!-- SCRIPTS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>

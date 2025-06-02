@@ -17,7 +17,7 @@
       <div class="shape shape-1"></div>
       <div class="shape shape-2"></div>
     </div>
-    <h1 class="login-title"> AquaSpark</h1>
+    <h1 class="login-title">💧 AquaSpark</h1>
     <form id="loginForm">
       <input type="email" id="email" class="form-control" placeholder="Email address" required />
       <div class="password-container">
@@ -26,124 +26,238 @@
           <i class="fas fa-eye" id="eyeIcon"></i>
         </button>
       </div>
-      <button type="submit" class="login-btn">Login</button>
+      <button type="submit" class="login-btn">
+        <i class="fas fa-sign-in-alt me-2"></i>Login
+      </button>
+      <div class="text-center mt-3">
+        <small class="text-muted">Demo: aqua@spark.com / password</small>
+      </div>
     </form>
   </div>
 
   <!-- DASHBOARD SECTION -->
-  <div id="dashboard" class="position-relative">
-    <!-- SETTINGS DRAWER BUTTON -->
-    <div class="position-absolute top-0 end-0 p-3">
-      <button class="btn btn-outline-secondary" onclick="openDrawer()" title="Settings">
-        <i class="fas fa-cog"></i>
-      </button>
-    </div>
+  <div id="dashboard">
+    <!-- SETTINGS BUTTON -->
+    <button class="settings-btn" onclick="openDrawer()" title="Settings">
+      <i class="fas fa-cog"></i>
+      <span class="notification-badge" id="notificationBadge">0</span>
+    </button>
 
     <nav>
-      <a href="#" onclick="showSection('stock')">Stock</a>
-      <a href="#" onclick="showSection('delivery')">Delivery</a>
-      <a href="#" onclick="showSection('tracking')">Tracking</a>
-      <a href="#" onclick="showSection('Sales')">Sales</a>
+      <a href="#" onclick="showSection('overview')" class="active">📊 Overview</a>
+      <a href="#" onclick="showSection('stock')">📦 Stock</a>
+      <a href="#" onclick="showSection('delivery')">🚚 Delivery</a>
+      <a href="#" onclick="showSection('tracking')">📍 Tracking</a>
+      <a href="#" onclick="showSection('sales')">💰 Sales</a>
     </nav>
 
-    <div id="stock" class="section active">
+    <!-- OVERVIEW SECTION -->
+    <div id="overview" class="section active">
+      <h2>📊 Business Overview</h2>
+      <div class="row">
+        <div class="col-md-3 col-6">
+          <div class="stats-card">
+            <div class="stats-value" id="totalSales">₱0</div>
+            <div class="stats-label">Total Sales</div>
+          </div>
+        </div>
+        <div class="col-md-3 col-6">
+          <div class="stats-card">
+            <div class="stats-value" id="totalItems">0</div>
+            <div class="stats-label">Items in Stock</div>
+          </div>
+        </div>
+        <div class="col-md-3 col-6">
+          <div class="stats-card">
+            <div class="stats-value" id="pendingDeliveries">0</div>
+            <div class="stats-label">Pending Deliveries</div>
+          </div>
+        </div>
+        <div class="col-md-3 col-6">
+          <div class="stats-card">
+            <div class="stats-value" id="todaySales">₱0</div>
+            <div class="stats-label">Today's Sales</div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="mt-4">
+        <h4>📈 Quick Actions</h4>
+        <div class="d-flex flex-wrap gap-2">
+          <button class="btn-custom" onclick="showSection('stock')">
+            <i class="fas fa-plus me-1"></i>Add Stock
+          </button>
+          <button class="btn-custom" onclick="showSection('sales')">
+            <i class="fas fa-cash-register me-1"></i>Record Sale
+          </button>
+          <button class="btn-custom" onclick="showSection('delivery')">
+            <i class="fas fa-truck me-1"></i>New Delivery
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- STOCK SECTION -->
+    <div id="stock" class="section">
       <h2>📦 Inventory Stock</h2>
-      <input type="text" id="itemName" placeholder="Item Name" />
-      <input type="number" id="itemQty" placeholder="Quantity" />
-      <input type="number" id="itemPrice" placeholder="Price (₱)" />
-      <button onclick="addItem()">Add Item</button>
+      <div class="input-group">
+        <input type="text" id="itemName" placeholder="Item Name" />
+        <input type="number" id="itemQty" placeholder="Quantity" min="1" />
+        <input type="number" id="itemPrice" placeholder="Price (₱)" min="0" step="0.01" />
+        <button class="btn-custom" onclick="addItem()">
+          <i class="fas fa-plus me-1"></i>Add Item
+        </button>
+      </div>
       <table>
-        <thead><tr><th>Item</th><th>Qty</th><th>Price</th><th>Actions</th></tr></thead>
+        <thead>
+          <tr>
+            <th>Item</th>
+            <th>Quantity</th>
+            <th>Price</th>
+            <th>Total Value</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
         <tbody id="stockTable"></tbody>
       </table>
     </div>
 
+    <!-- DELIVERY SECTION -->
     <div id="delivery" class="section">
       <h2>🚚 Delivery Management</h2>
-      <input type="text" id="deliveryItem" placeholder="Item" />
-      <input type="text" id="deliveryAddress" placeholder="Address" />
-      <input type="text" id="deliveryStatus" placeholder="Status (e.g. pending)" />
-      <button onclick="addDelivery()">Add Delivery</button>
+      <div class="input-group">
+        <select id="deliveryItem" class="form-control">
+          <option selected disabled>Select Item</option>
+        </select>
+        <input type="text" id="deliveryAddress" placeholder="Delivery Address" />
+        <input type="text" id="customerName" placeholder="Customer Name" />
+        <select id="deliveryStatus">
+          <option value="pending">Pending</option>
+          <option value="in-transit">In Transit</option>
+          <option value="delivered">Delivered</option>
+        </select>
+        <button class="btn-custom" onclick="addDelivery()">
+          <i class="fas fa-plus me-1"></i>Add Delivery
+        </button>
+      </div>
       <table>
-        <thead><tr><th>Item</th><th>Address</th><th>Status</th></tr></thead>
+        <thead>
+          <tr>
+            <th>Item</th>
+            <th>Customer</th>
+            <th>Address</th>
+            <th>Status</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
         <tbody id="deliveryTable"></tbody>
       </table>
     </div>
 
+    <!-- TRACKING SECTION -->
     <div id="tracking" class="section">
       <h2>📍 Live Truck Tracking</h2>
-      <input type="text" id="truckLocationInput" placeholder="Enter Address or Coordinates" />
-      <button onclick="locateOnMap()">Show on Map</button>
+      <div class="input-group">
+        <input type="text" id="truckLocationInput" placeholder="Enter Coordinates (lat,lng) e.g. 14.5995,120.9842" />
+        <button class="btn-custom" onclick="locateOnMap()">
+          <i class="fas fa-map-marker-alt me-1"></i>Show on Map
+        </button>
+        <button class="btn-custom" onclick="getCurrentLocation()">
+          <i class="fas fa-crosshairs me-1"></i>Use Current Location
+        </button>
+      </div>
       <div id="map"></div>
     </div>
 
-    <div id="Sales" class="section">
+    <!-- SALES SECTION -->
+    <div id="sales" class="section">
       <h2>💰 Record Sales</h2>
-      <select id="salesItem" class="form-control mb-2">
-        <option selected disabled>Select Item</option>
-        <option value="Water Gallon">Water Gallon</option>
-        <option value="5L Bottle">5L Bottle</option>
-        <option value="Delivery Charge">Delivery Charge</option>
-      </select>
-      <input type="number" id="salesQty" placeholder="Enter Quantity" class="form-control mb-2" min="1" />
-      <button class="btn btn-success mb-3" onclick="recordSale()">Record Sale</button>
+      <div class="input-group">
+        <select id="salesItem" class="form-control">
+          <option selected disabled>Select Item</option>
+        </select>
+        <input type="number" id="salesQty" placeholder="Enter Quantity" min="1" />
+        <button class="btn-custom" onclick="recordSale()">
+          <i class="fas fa-cash-register me-1"></i>Record Sale
+        </button>
+      </div>
 
-      <h4 style="color: white;">🧾 Latest Receipt</h4>
-<pre id="latestReceipt" class="p-2 bg-light rounded" style="color: black;">No sales yet.</pre>
+      <div id="latestReceipt" class="receipt-container" style="display: none;">
+        <h5>🧾 Latest Receipt</h5>
+        <div id="receiptContent"></div>
+      </div>
 
-      <h4 class="mt-4">📊 Sales History</h4>
-
-      <!-- 👇 Integrated View Daily Sales Button Here -->
-      
-      <button class="btn btn-danger mb-2" onclick="clearSales()">Clear Sales History</button>
-      <div class="table-responsive">
-        <table class="table table-bordered">
-          <thead>
-            <tr><th>Item</th><th>Qty</th><th>Total</th><th>Date</th></tr>
-          </thead>
-          <tbody id="salesTableBody"></tbody>
-        </table>
+      <div class="mt-4">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+          <h4>📊 Sales History</h4>
+          <div>
+            <button class="btn btn-info btn-sm me-2" onclick="showDailySales()">
+              <i class="fas fa-calendar-day me-1"></i>Daily Report
+            </button>
+            <button class="btn btn-danger btn-sm" onclick="clearSales()">
+              <i class="fas fa-trash me-1"></i>Clear History
+            </button>
+          </div>
+        </div>
+        <div class="table-responsive">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Item</th>
+                <th>Qty</th>
+                <th>Unit Price</th>
+                <th>Total</th>
+                <th>Date</th>
+              </tr>
+            </thead>
+            <tbody id="salesTableBody"></tbody>
+          </table>
+        </div>
       </div>
     </div>
 
+    <!-- DAILY SALES SECTION -->
     <div id="dailySales" class="section">
-      <h2>📅 Daily Sales</h2>
+      <h2>📅 Daily Sales Report</h2>
       <div id="dailySalesData"></div>
-    </div>
-
-    <div id="weeklySales" class="section">
-      <h2>📈 Weekly Sales</h2>
-      <div id="weeklySalesData"></div>
-    </div>
-
-    <div id="monthlySales" class="section">
-      <h2>📋 Monthly Sales</h2>
-      <div id="monthlySalesData"></div>
     </div>
   </div>
 
   <!-- SETTINGS DRAWER -->
-  <div class="offcanvas offcanvas-end" tabindex="-1" id="settingsDrawer">
+  <div class="offcanvas offcanvas-end" tabindex="-1" id="settingsDrawer" aria-labelledby="settingsDrawerLabel">
     <div class="offcanvas-header">
-      <h5 class="offcanvas-title">Account Settings</h5>
-      <button type="button" class="btn-close" data-bs-dismiss="offcanvas"></button>
+      <h5 class="offcanvas-title" id="settingsDrawerLabel">⚙️ Settings</h5>
+      <button type="button" class="btn-close btn-close-custom" id="closeDrawerBtn" aria-label="Close"></button>
     </div>
     <div class="offcanvas-body">
       <div class="d-flex align-items-center justify-content-between mb-3">
         <div><i class="fas fa-bell"></i> Notifications</div>
-        <span class="badge bg-danger rounded-pill" id="notificationBadge">0</span>
+        <span class="badge bg-danger rounded-pill" id="drawerNotificationBadge">0</span>
       </div>
+      
       <div class="mb-3">
-        <div class="fw-bold"><i class="fas fa-chart-line me-2"></i> Sales</div>
-        <button onclick="showSection('dailySales')" class="btn btn-outline-primary">
-          View Daily Sales
+        <div class="fw-bold mb-2"><i class="fas fa-chart-line me-2"></i>Reports</div>
+        <button class="btn btn-outline-light w-100 mb-2" onclick="showSection('dailySales'); closeDrawer();">
+          📅 Daily Sales
         </button>
-        <button class="btn btn-outline-primary w-100 mt-2" onclick="showSales('weekly')">📈 Weekly Sales</button>
-        <button class="btn btn-outline-success w-100 mt-2" onclick="showSales('monthly')">📋 Monthly Sales</button>
+        <button class="btn btn-outline-light w-100 mb-2" onclick="exportData()">
+          📄 Export Data
+        </button>
       </div>
+      
+      <div class="mb-3">
+        <div class="fw-bold mb-2"><i class="fas fa-cog me-2"></i>System</div>
+        <button class="btn btn-outline-warning w-100 mb-2" onclick="backupData()">
+          💾 Backup Data
+        </button>
+        <button class="btn btn-outline-info w-100 mb-2" onclick="showSystemInfo()">
+          ℹ️ System Info
+        </button>
+      </div>
+      
       <hr />
       <button class="btn btn-danger w-100" id="logoutBtn">
-        <i class="fas fa-sign-out-alt me-2"></i> Logout
+        <i class="fas fa-sign-out-alt me-2"></i>Logout
       </button>
     </div>
   </div>
